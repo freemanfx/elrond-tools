@@ -5,7 +5,7 @@
         <div class="container">
           <div class="col-12 row">
             <label>Wallet address:</label>
-            <input class="form-control" type="text" [(ngModel)]="account" (ngModelChange)="loadData()" placeholder="Please enter the wallet address erd1.."/>
+            <input class="form-control" type="text" [(ngModel)]="profile.account" (ngModelChange)="loadData()" placeholder="Please enter the wallet address erd1.."/>
           </div>
         </div>
       </nav>
@@ -25,7 +25,7 @@
               <div class="form-group row">
                 <div class="col-4">
                   <label>Transaction count</label>
-                  <input class="form-control" type="number" [(ngModel)]="transactionsCount"
+                  <input class="form-control" type="number" [(ngModel)]="profile.transactionsCount"
                          (ngModelChange)="loadData()"/>
                 </div>
                 <div class="col-4">
@@ -34,7 +34,7 @@
                 </div>
                 <div class="col-4">
                   <label>Status</label>
-                  <select class="form-control" [(ngModel)]="status" (ngModelChange)="loadData()">
+                  <select class="form-control" [(ngModel)]="profile.status" (ngModelChange)="loadData()">
                     <option value="all">all</option>
                     <option value="success">success</option>
                     <option value="fail">fail</option>
@@ -76,7 +76,7 @@
                 <tr class="bg-primary">
                   <td></td>
                   <td></td>
-                  <td>Total for number of tx {{transactions.length}}</td>
+                  <td>Total for {{transactions.length}} transactions</td>
                   <td></td>
                   <td>{{totalUSD('value') / egldPriceUSD | number: numberFormat}}</td>
                   <td>${{totalUSD('value') | number: numberFormat}}</td>

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ApiService} from './data/api.service';
 import {Transaction} from './data/models/transaction';
 import * as _ from 'lodash';
+import {Profile} from './data/models/profile';
 
 @Component({
   selector: 'app-root',
@@ -9,28 +10,33 @@ import * as _ from 'lodash';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent implements OnInit {
-  account = '';
-  transactionsCount = 2;
+  profile: Profile = {
+    account: '',
+    transactionsCount: 2,
+    status: 'all'
+  };
+
   transactions: Transaction[] = [];
   egldPriceUSD = 250;
   numberFormat = '1.2-2';
   dateTimeFormat = 'MMM dd, yyyy hh:mm:ss a';
-  status = 'all';
 
   constructor(private api: ApiService) {
   }
 
   ngOnInit(): void {
+    this.loadSettings();
     this.api.getPriceEGLD().subscribe(egldPrice => this.egldPriceUSD = egldPrice);
     this.loadData();
   }
 
   public loadData(): void {
-    if (this.account.length === 62 && this.transactionsCount > 1) {
-      this.api.getTransactions(this.account, this.transactionsCount)
+    this.storeSettings();
+    if (this.profile.account.length === 62 && this.profile.transactionsCount > 1) {
+      this.api.getTransactions(this.profile.account, this.profile.transactionsCount)
         .subscribe(transactions => {
-          if (this.status !== 'all') {
-            this.transactions = _.filter(transactions, t => t.status === this.status);
+          if (this.profile.status !== 'all') {
+            this.transactions = _.filter(transactions, t => t.status === this.profile.status);
           } else {
             this.transactions = transactions;
           }
@@ -59,5 +65,16 @@ export class AppComponent implements OnInit {
     let sum = 0;
     this.transactions.forEach((transaction: any) => sum = sum + this.eGLDToUSD(transaction[field]));
     return sum;
+  }
+
+  private storeSettings(): void {
+    localStorage.setItem('profile', JSON.stringify(this.profile));
+  }
+
+  private loadSettings(): void {
+    const value = localStorage.getItem('profile');
+    if (value) {
+      this.profile = JSON.parse(value);
+    }
   }
 }
