@@ -1,0 +1,75 @@
+<div class="col-12 py-spacer h5 m-0 text-secondary">Transactions</div>
+<div class="col-12 mb-4">
+  <div class="standard-card card farm-card overflow-hidden">
+    <div class="card-header p-4 d-flex align-items-center justify-content-between rounded"
+         style="cursor: pointer;">
+      <div class="col-12">
+        <div class="form-group row">
+          <div class="col-4">
+            <label>Transaction count</label>
+            <input class="form-control" type="number" [(ngModel)]="profile.transactionsCount"
+                   (ngModelChange)="loadData()"/>
+          </div>
+          <div class="col-4">
+            <label>EGLD Price USD</label>
+            <input class="form-control" type="number" [(ngModel)]="egldPriceUSD" (ngModelChange)="loadData()"/>
+          </div>
+          <div class="col-4">
+            <label>Status</label>
+            <select class="form-control" [(ngModel)]="profile.status" (ngModelChange)="loadData()">
+              <option value="all">all</option>
+              <option value="success">success</option>
+              <option value="fail">fail</option>
+            </select>
+          </div>
+        </div>
+
+        <div *ngIf="transactions.length === 0">
+          No results
+        </div>
+        <table class="table" *ngIf="transactions.length > 0">
+          <thead>
+          <tr>
+            <th>Nonce</th>
+            <th class="col-2">Date</th>
+            <th class="col-5">Description</th>
+            <th>Status</th>
+            <th>Value</th>
+            <th>Value $</th>
+            <th>Fee $</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr class="bg-primary">
+            <td></td>
+            <td></td>
+            <td>Total for {{transactions.length}} transactions</td>
+            <td></td>
+            <td>{{totalUSD('value') / egldPriceUSD | number: numberFormat}}</td>
+            <td>${{totalUSD('value') | number: numberFormat}}</td>
+            <td>${{totalUSD('fee') | number: numberFormat}}</td>
+          </tr>
+          <tr *ngFor="let transaction of transactions">
+            <td>{{transaction.nonce}}</td>
+            <td>{{transaction.timestamp * 1000 | date:dateTimeFormat}}</td>
+            <td>{{description(transaction)}}</td>
+            <td>{{transaction.status}}</td>
+            <td>{{eGLD(transaction.value) | number: numberFormat}}</td>
+            <td>${{eGLDToUSD(transaction.value) | number: numberFormat}}</td>
+            <td>${{eGLDToUSD(transaction.fee) | number: numberFormat}}</td>
+          </tr>
+          <tr class="bg-primary">
+            <td></td>
+            <td></td>
+            <td>Total for {{transactions.length}} transactions</td>
+            <td></td>
+            <td>{{totalUSD('value') / egldPriceUSD | number: numberFormat}}</td>
+            <td>${{totalUSD('value') | number: numberFormat}}</td>
+            <td>${{totalUSD('fee') | number: numberFormat}}</td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

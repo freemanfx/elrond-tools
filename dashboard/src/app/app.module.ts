@@ -5,10 +5,12 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { TransactionsComponent } from './transactions/transactions.component';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    TransactionsComponent
   ],
   imports: [
     BrowserModule,
