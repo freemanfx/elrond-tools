@@ -1,0 +1,97 @@
+<div class="layout flex-fill">
+  <div class="main-navbar">
+    <div class="px-3 px-md-4 py-2">
+      <nav class="col navbar navbar-expand-lg align-items-stretch justify-content-between flex-nowrap p-0">
+        <div class="container">
+          <div class="col-12 row">
+            <label>Wallet address:</label>
+            <input class="form-control" type="text" [(ngModel)]="account" (ngModelChange)="loadData()" placeholder="Please enter the wallet address erd1.."/>
+          </div>
+        </div>
+      </nav>
+    </div>
+  </div>
+</div>
+
+<div class="container d-flex flex-column flex-grow-1">
+  <main class="main-content row d-flex flex-column ">
+    <div class="row">
+      <div class="col-12 py-spacer h5 m-0 text-secondary">Transactions</div>
+      <div class="col-12 mb-4">
+        <div class="standard-card card farm-card overflow-hidden   ">
+          <div class="card-header p-4 d-flex align-items-center justify-content-between rounded"
+               style="cursor: pointer;">
+            <div class="col-12">
+              <div class="form-group row">
+                <div class="col-4">
+                  <label>Transaction count</label>
+                  <input class="form-control" type="number" [(ngModel)]="transactionsCount"
+                         (ngModelChange)="loadData()"/>
+                </div>
+                <div class="col-4">
+                  <label>EGLD Price USD</label>
+                  <input class="form-control" type="number" [(ngModel)]="egldPriceUSD" (ngModelChange)="loadData()"/>
+                </div>
+                <div class="col-4">
+                  <label>Status</label>
+                  <select class="form-control" [(ngModel)]="status" (ngModelChange)="loadData()">
+                    <option value="all">all</option>
+                    <option value="success">success</option>
+                    <option value="fail">fail</option>
+                  </select>
+                </div>
+              </div>
+
+              <table class="table">
+                <thead>
+                <tr>
+                  <th>Nonce</th>
+                  <th class="col-2">Date</th>
+                  <th class="col-5">Description</th>
+                  <th>Status</th>
+                  <th>Value</th>
+                  <th>Value $</th>
+                  <th>Fee $</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr class="bg-primary">
+                  <td></td>
+                  <td></td>
+                  <td>Total for {{transactions.length}} transactions</td>
+                  <td></td>
+                  <td>{{totalUSD('value') / egldPriceUSD | number: numberFormat}}</td>
+                  <td>${{totalUSD('value') | number: numberFormat}}</td>
+                  <td>${{totalUSD('fee') | number: numberFormat}}</td>
+                </tr>
+                <tr *ngFor="let transaction of transactions">
+                  <td>{{transaction.nonce}}</td>
+                  <td>{{transaction.timestamp * 1000 | date:dateTimeFormat}}</td>
+                  <td>{{description(transaction)}}</td>
+                  <td>{{transaction.status}}</td>
+                  <td>{{eGLD(transaction.value) | number: numberFormat}}</td>
+                  <td>${{eGLDToUSD(transaction.value) | number: numberFormat}}</td>
+                  <td>${{eGLDToUSD(transaction.fee) | number: numberFormat}}</td>
+                </tr>
+                <tr class="bg-primary">
+                  <td></td>
+                  <td></td>
+                  <td>Total for number of tx {{transactions.length}}</td>
+                  <td></td>
+                  <td>{{totalUSD('value') / egldPriceUSD | number: numberFormat}}</td>
+                  <td>${{totalUSD('value') | number: numberFormat}}</td>
+                  <td>${{totalUSD('fee') | number: numberFormat}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div></div>
+    <div class="toast-messages d-flex flex-column align-items-center justify-content-sm-end"></div>
+  </main>
+</div>
+
+<router-outlet></router-outlet>
